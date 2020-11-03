@@ -57,7 +57,10 @@ Make sure to `View()` the resulting data frame (remember: run `View()` in the Co
 
 ```{r}
 # Your code here: 
-
+sw_split_name <- starwars %>% 
+  separate(col = name,
+           into = c("name_1", "name_2"),
+           sep = "-")
 
 ```
 
@@ -91,7 +94,12 @@ Make sure to `View()` the resulting data frame (remember: run `View()` in the Co
 
 ```{r}
 # Your code here:
-
+sw_skin_sep <- starwars %>% 
+  separate(col = skin_color,
+           into = c("skin_1", "skin_2"), 
+           sep = ",",
+           extra = "merge", 
+           remove = FALSE)
 
 ```
 
@@ -127,6 +135,11 @@ In the code chunk below, starting from the `mpg` data create a new data frame ca
 
 ```{r}
 # Your code here: 
+mpg_model_class <- mpg %>% 
+  unite(col = model_class, 
+        c(model, class),
+        sep = "-",
+        remove = FALSE)
 
 
 ```
@@ -158,7 +171,11 @@ In the code chunk below, use `ymd()` to convert a date that you choose in `YYYY-
 ```{r}
 # Your code here: 
 
+ymd(19980116)
 
+ymd("1998-01-16")
+
+ymd("1998/01/16")
 ```
 
 #### 3B. Follow me
@@ -182,8 +199,11 @@ In the code chunk below, create a vector (using `c()`, as above) stored as `some
 
 ```{r}
 # Your code here: 
+hanna_dates <- c(01161998, 05271966, 06011969)
+hanna_dates_converted <- mdy(hanna_dates)
+hanna_dates_converted
 
-
+class(hanna_dates_converted)
 ```
 
 #### 3C. Follow me
@@ -226,6 +246,12 @@ Starting from the `lakers` dataset, create a new dataset called `gasol_hookshots
 
 ```{r}
 # Your code here: 
+gasol_hookshoots <- lakers %>% 
+  filter(player == "Pau Gasol", type == "hook") %>% 
+  mutate(date_new = ymd(date)) %>% 
+  mutate(month_new = month(date_new)) %>% 
+  group_by(month_new) %>% 
+  count()
 
 
 ```
@@ -276,7 +302,11 @@ Note: If you add another condition within `case_when()` that is `TRUE ~ "some th
 
 ```{r}
 # Your code here: 
-
+storms_danger <- storms %>% 
+  mutate(danger = case_when(
+    status %in% c("hurricane") ~ "high",
+    TRUE ~ "moderate"
+  ))
 
 ```
 
